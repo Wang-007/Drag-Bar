@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		* {margin: 0; padding: 0;}
+		.scroll {
+			width: 300px;
+			height: 8px;
+			margin: 100px;
+			background-color: #ccc;
+			position: absolute;
+		}
+		.bar {
+			width: 15px;
+			height: 24px;
+			background-color: #369;
+			position: absolute;
+			left: 0;
+			top: -8px;
+			cursor: pointer;
+		}
+		.mask {
+			width: 0;
+			height: 100%;
+			background-color: #369;
+		}
+	</style>
+</head>
+<body>
+	<div class="scroll" id="scroll">
+		<div class="bar"></div>
+		<div class="mask"></div>
+	</div>
+	<div id="demo"></div>
+</body>
+</html>
+<script type="text/javascript">
+	var scroll = document.getElementById('scroll'),
+		bar = scroll.children[0],
+		mask = scroll.children[1],
+		demo = document.getElementById('demo');
+	bar.onmousedown = function(event) {
+		var event = event || window.event,
+			leftVal = event.clientX - this.offsetLeft,
+			that = this;
+		document.onmousemove = function(event) {
+			var event = event || window.event;
+			that.style.left = event.clientX - leftVal + 'px';
+			if (parseInt(that.style.left) < 0) {
+				that.style.left = 0;
+			} else if (parseInt(that.style.left) > scroll.offsetWidth - that.offsetWidth) {
+				that.style.left = scroll.offsetWidth - that.offsetWidth + 'px';
+			}
+			mask.style.width = that.style.left;
+			demo.innerHTML = '百分比为:' + parseInt(that.offsetLeft / (scroll.offsetWidth - that.offsetWidth) * 100) + '%';
+			window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+		}
+		document.onmouseup = function() {
+			document.onmousemove = null;
+		}
+	}
+</script>
