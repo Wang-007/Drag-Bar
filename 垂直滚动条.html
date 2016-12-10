@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		* { margin: 0; padding: 0; }
+		.box {
+			width:300px;
+			height: 600px;
+			margin: 100px;
+			border: 1px solid red;
+			position: relative;
+		}
+		.scroll {
+			width: 20px;
+			height: 100%;
+			background-color: #eee;
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+		.bar {
+			width: 100%;
+			background-color: red;
+			border-radius: 10px;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.content {
+			padding: 5px 20px 5px 5px;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="box" id="box">
+		<div class="content">
+			文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容
+		</div>
+		<div class="scroll">
+			<div class="bar"></div>
+		</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	var box = document.getElementById('box'),
+		content = box.children[0],
+		scroll = box.children[1],
+		bar = scroll.children[0];
+		barHeight = box.offsetHeight / content.offsetHeight * box.offsetHeight;
+		if (box.offsetHeight / content.offsetHeight >= 1) {
+			scroll.style.display = 'none';
+		}
+		bar.style.height = barHeight + 'px';
+		startScroll(bar, content);
+		function startScroll(obj, target) {
+			obj.onmousedown = function(event) {
+				var event = event || window.event,
+					topVal = event.clientY - this.offsetTop,
+					that = this;
+				document.onmousemove = function(event) {
+					var event = event || window.event,
+						barTop = event.clientY - topVal,
+						contentTop = (target.offsetHeight - target.parentNode.offsetHeight) / (target.parentNode.offsetHeight - that.offsetHeight) * barTop;
+					if (barTop < 0) {
+						barTop = 0;
+					} else if (barTop > target.parentNode.offsetHeight - that.offsetHeight) {
+						barTop = target.parentNode.offsetHeight - that.offsetHeight;
+					} else {
+						target.style.top = -contentTop + 'px';
+					}
+					that.style.top = barTop + 'px';
+					window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+				}
+			}
+			document.onmouseup = function() {
+				document.onmousemove = null;
+			}
+		}
+</script>
